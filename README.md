@@ -4,7 +4,7 @@ An educational Rust application that simulates an agent-based predator-prey ecos
 
 ## Status
 
-✅ Fully functional - Ready for educational use!
+Project status: stable; suitable for educational use.
 
 ## Features
 
@@ -16,30 +16,30 @@ An educational Rust application that simulates an agent-based predator-prey ecos
 - **Energy-based lifecycle** - agents consume energy, reproduce, and die naturally
 
 ### Interactive Controls
-- **Population Controls**: Adjust initial predator/prey counts with sliders (0-500 range)
-- **Spawn Agents**: Add predators or prey to running simulation with "Spawn Now" buttons
-- **Reset Simulation**: Restart with current slider values
-- **Pause/Resume**: Control simulation execution
-- **Speed Control**: Adjust simulation speed (0.1x to 5x)
+- **Population controls**: Adjust initial predator/prey counts with sliders (0–500)
+- **Agent spawning**: Add predators or prey during execution via "Spawn Now" buttons
+- **Reset**: Restart with current slider values
+- **Pause/Resume**: Control execution state
+- **Speed control**: Adjust simulation speed (0.1× to 5×)
 
 ### Live Evaluation & Graphics
-- **Population Graph**: Real-time line graph showing predator and prey populations over time
-  - Red line: Predator population
-  - Green line: Prey population
+- **Population graph**: Real-time line graph showing predator and prey population counts
+  - Red line: predators
+  - Green line: prey
   - Auto-scaling based on data range
-- **Statistics Window**: 
+- **Statistics window**:
   - Current population counts
   - Average energy levels
-  - Historical statistics (averages, peaks)
+  - Historical aggregates (averages, peaks)
   - Data point tracking
-- **Data Collection**: Tracks last 1000 simulation ticks
+- **Data collection**: Maintains a rolling window of the last 1000 ticks
 
 ### Visualization Options
-- **Energy-based coloring**: Agent colors indicate energy levels
-- **Velocity vectors**: Optional display of agent movement direction
-- **Perception radius**: Visualize detection ranges
-- **Grid overlay**: Optional grid for spatial reference
-- **Adjustable agent size**: Customize visualization scale
+- **Energy-based coloring**: Agent color encodes energy level
+- **Velocity vectors**: Optional visualization of movement direction
+- **Perception radius**: Optional visualization of detection ranges
+- **Grid overlay**: Optional spatial reference grid
+- **Adjustable agent size**: Configurable visualization scale
 
 ## Installation
 
@@ -63,12 +63,12 @@ cargo run --release
 
 ### Usage Guide
 
-1. **Start the simulation**: The app opens with default parameters
-2. **Adjust populations**: Use the "Population Controls" sliders to set initial counts
-3. **Spawn agents**: Click "🐺 Spawn Now" or "🐰 Spawn Now" to add agents during simulation
-4. **Monitor populations**: Watch the Population Graph window for real-time trends
-5. **View statistics**: Check the Statistics window for detailed metrics
-6. **Adjust parameters**: Use collapsible sections in the control panel to modify:
+1. Start the application with default parameters
+2. Adjust initial populations via the population sliders
+3. Spawn agents during execution via the respective "Spawn Now" buttons
+4. Observe population trends in the population graph window
+5. Inspect current and historical metrics in the statistics window
+6. Adjust parameters in the control panel sections:
    - Predator behavior (speed, perception, energy, reproduction)
    - Prey behavior (speed, detection, regeneration, reproduction)
    - World settings (size, boundary type)
@@ -76,18 +76,23 @@ cargo run --release
 
 ### Key Features Explained
 
-**Torus Topography**: The world wraps around at all edges. Agents moving off one side appear on the opposite side. Distance calculations account for this, so predators can detect prey across boundaries.
+**Torus topography**: The world wraps around at all edges. Agents crossing a boundary re-enter on the opposite edge. Distance calculations account for wraparound.
 
-**Live Spawning**: You can add agents to a running simulation without resetting. Useful for:
-- Testing population dynamics
-- Observing how ecosystems respond to changes
-- Educational demonstrations
+**Live spawning**: Agents can be added during execution without resetting. Typical uses include testing population responses and demonstrating intervention scenarios.
 
-**Population Graph**: Shows the classic predator-prey cycle:
-- When prey population rises, predators have more food and multiply
-- High predator population reduces prey numbers
-- Reduced prey causes predator decline
-- The cycle repeats
+**Population graph**: Often exhibits predator–prey cycles. Increases in prey availability enable predator growth; elevated predation reduces prey, subsequently lowering predator counts.
+
+## Theoretical Background: Agent-Based Simulation
+
+Agent-based modeling (ABM) simulates systems from the bottom up. Individual entities (agents) follow local rules; aggregate behavior emerges from their interactions. In this system, agents are predators or prey with state (position, velocity, energy, age) and rule sets.
+
+- **Agent rules**: Predators pursue prey within a perception radius, consume within a capture distance, lose energy over time, and reproduce above a threshold. Prey detect predators, flee, regenerate energy, and may reproduce.
+- **Emergence**: Local rules can produce familiar ecological dynamics (e.g., predator–prey cycles). In contrast to equation-based mean-field models, ABM explicitly represents space, heterogeneity, and stochastic events.
+- **Relation to Lotka–Volterra**: Lotka–Volterra provides coupled ODEs for average population dynamics. ABM introduces spatial structure and randomness, enabling clustering, local extinctions, dispersal effects, and run-to-run variability.
+- **Topology**: A torus (wraparound) 2D space avoids edge artifacts; agents re-enter on the opposite edge. This approximates homogeneous conditions.
+- **Time and stochasticity**: The simulation advances in discrete ticks. Random components (e.g., spawn positions) introduce variability and enable sensitivity analyses via repeated runs.
+
+The objective is to provide a transparent reference implementation for teaching and experimentation.
 
 ## Documentation
 
@@ -122,7 +127,5 @@ cargo test --test integration_tests # Full simulation tests
   - `rand` for randomness
 - **Performance**: Optimized for real-time simulation with 1000+ agents
 
-## License
-
-*(To be determined)*
+2025 Axel Schmidt
 
